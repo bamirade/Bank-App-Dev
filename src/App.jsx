@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from "react";
+import Login from "./components/Auth/Login.jsx";
+import Home from "./components/Home/Home.jsx";
+import { Box } from "@mui/material";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [loggedInUser, setLoggedInUser] = useState(
+    JSON.parse(localStorage.getItem("loggedInUser"))
+  );
+
+  const handleLogin = (username, password) => {
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const matchedUser = users.find(
+      (user) => user.username === username && user.password === password
+    );
+    if (matchedUser) {
+      setLoggedInUser(matchedUser);
+      localStorage.setItem("loggedInUser", JSON.stringify(matchedUser));
+    } else {
+      alert("Invalid username or password");
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("loggedInUser");
+    setLoggedInUser(null);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+      {loggedInUser ? (
+        <Home handleLogout={handleLogout} loggedInUser={loggedInUser} />
+      ) : (
+        <Login handleLogin={handleLogin} />
+      )}
+      </Box>
+    </div>
+  );
+};
 
-export default App
+export default App;
