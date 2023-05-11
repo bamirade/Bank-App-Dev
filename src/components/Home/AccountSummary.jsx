@@ -25,18 +25,24 @@ const AccountSummary = ({ loggedInUser }) => {
                         alignItems: "center",
                     }}
                 >
-                    <AccountCircleIcon sx={{ gridColumn: "1/1", justifySelf: "center" }} />
-                    <Typography variant="h5" sx={{ gridColumn: "2/4" }}>{loggedInUser.username}</Typography>
+                    <AccountCircleIcon 
+                        sx={{ gridColumn: "1/1", justifySelf: "center" }}
+                        title="Account"
+                    />
+                    <Typography variant="h5" sx={{ gridColumn: "2/4", ml: 2 }}>
+                        {loggedInUser.username}
+                    </Typography>
                 </Box>
                 <Box p={2}>
                     <Grid container spacing={2}>
-                        <Grid item xs={6}>
+                        <Grid item xs={6} sx={{ '.MuiPaper-root:hover': { transform: 'scale(1.05)' }}}>
                             <Box display="flex" alignItems="flex-end">
                                 <AccountBalanceWalletIcon
                                     sx={{ fontSize: "2rem", color: theme.palette.secondary.main }}
+                                    title="Account balance"
                                 />
                                 <Typography
-                                    variant="subtitle1"
+                                    variant="subtitle2"
                                     color="textSecondary"
                                     sx={{ marginLeft: "0.5rem" }}
                                 >
@@ -44,9 +50,9 @@ const AccountSummary = ({ loggedInUser }) => {
                                 </Typography>
                             </Box>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={6} sx={{ '.MuiPaper-root:hover': { transform: 'scale(1.05)' }}}>
                             <Typography variant="h6" sx={{ fontSize: "1rem", fontWeight: 'bold', display: "flex", flexDirection: "row-reverse", justifyContent: "flex-start"}}>
-                                ${loggedInUser.balance.toFixed(2)}
+                                $ {loggedInUser.balance.toFixed(2)}
                             </Typography>
                         </Grid>
                     </Grid>

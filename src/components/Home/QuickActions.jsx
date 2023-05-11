@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Button, Typography } from "@mui/material";
 import theme from "../Misc/Theme";
 import SendButton from "./Buttons/SendButton";
+import DepositButton from "./Buttons/DepositButton";
 import WithdrawButton from "./Buttons/WithdrawButton";
 import AccountsButton from "./Buttons/AccountsButton";
 

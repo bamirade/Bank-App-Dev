@@ -9,11 +9,15 @@ import {
   Link,
   Grid,
   Typography,
+  InputAdornment,
+  IconButton
 } from "@mui/material";
 import { ThemeProvider } from '@mui/material/styles';
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import BoltIcon from '@mui/icons-material/Bolt';
 import theme from '../Misc/Theme';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const SignUp = ({ handleSignUp, handleBack, errorMessage }) => {
   const [username, setUsername] = useState("");
@@ -21,11 +25,12 @@ const SignUp = ({ handleSignUp, handleBack, errorMessage }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [usernameError, setUsernameError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     let errors = false;
-    if (password !== confirmPassword && password.length < 1) {
+    if (password !== confirmPassword || password.length === 0) {
       setPasswordError("Passwords do not match");
       errors = true;
     }
@@ -94,12 +99,24 @@ const SignUp = ({ handleSignUp, handleBack, errorMessage }) => {
                   variant="outlined"
                   label="Password"
                   name="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   fullWidth
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowPassword(!showPassword)}
+                          edge="end"
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                   inputProps={{ 'aria-label': 'Enter your password' }}
                   aria-labelledby="password-input"
                 />
@@ -110,11 +127,23 @@ const SignUp = ({ handleSignUp, handleBack, errorMessage }) => {
                   variant="outlined"
                   label="Confirm Password"
                   name="confirmPassword"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   fullWidth
                   required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowPassword(!showPassword)}
+                          edge="end"
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                   inputProps={{ 'aria-label': 'Confirm your password' }}
                   aria-labelledby="confirm-password-input"
                   error={!!passwordError}

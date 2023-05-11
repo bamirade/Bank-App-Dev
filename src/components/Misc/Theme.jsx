@@ -9,15 +9,6 @@ const theme = createTheme({
       main: '#fbbe25',
     },
   },
-  overrides: {
-    MuiCssBaseline: {
-      '@global': {
-        body: {
-          background: 'linear-gradient(135deg, #fbbe25 0%, #292929 100%)',
-        },
-      },
-    },
-  },
 });
 
 export default theme;
