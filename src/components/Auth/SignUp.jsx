@@ -13,7 +13,6 @@ import {
   IconButton
 } from "@mui/material";
 import { ThemeProvider } from '@mui/material/styles';
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import BoltIcon from '@mui/icons-material/Bolt';
 import theme from '../Misc/Theme';
 import Visibility from '@mui/icons-material/Visibility';
@@ -53,13 +52,13 @@ const SignUp = ({ handleSignUp, handleBack, errorMessage }) => {
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <div
+        <Box
           sx={{
-            marginTop: 8,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "center",
+            "@media(max-width:769px)": { marginTop: 8 },
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
@@ -167,7 +166,7 @@ const SignUp = ({ handleSignUp, handleBack, errorMessage }) => {
               </Grid>
             </Grid>
           </Box>
-        </div>
+        </Box>
       </Container>
     </ThemeProvider>
   );

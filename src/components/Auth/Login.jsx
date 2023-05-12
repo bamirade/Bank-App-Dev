@@ -79,7 +79,7 @@ const Login = ({ handleLogin }) => {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            "@media(max-width:769px)": {marginTop: 8},
             display: "flex",
             flexDirection: "column",
             alignItems: "center",

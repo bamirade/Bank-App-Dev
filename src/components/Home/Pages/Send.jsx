@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import MuiAlert from '@mui/material/Alert';
 import theme from "../../Misc/Theme";
+import { ThemeProvider } from "@mui/material/styles";
 
 const Send = ({ handleSendSubmit, loggedInUser, setShowSend }) => {
     const [recipient, setRecipient] = useState("");
@@ -111,74 +112,76 @@ const Send = ({ handleSendSubmit, loggedInUser, setShowSend }) => {
     }
 
     return (
-        <Box
-            sx={{
-                padding: "1rem",
-                borderRadius: "0.625em",
-                boxShadow: "0px 0.125em 0.625em rgba(0, 0, 0, 0.1)",
-            }}
-        >
-            <Typography variant="h5" mb={2}>
-                Send Money
-            </Typography>
-            <form onSubmit={handleSubmit}>
-                <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={12}>
-                        <InputLabel htmlFor="recipient">Recipient</InputLabel>
-                        <Autocomplete
-                            id="recipient"
-                            options={users}
-                            getOptionLabel={(option) => option ? option.username : ''}
-                            renderInput={(params) => <TextField {...params} variant="outlined" />}
-                            InputProps={{
-                                error: recipientError,
-                                helperText: recipientError ? 'Recipient is required' : '',
-                            }}
-                            value={users.find(user => user.username === recipient) || ""}
-                            onChange={handleChangeRecipient}
-                            fullWidth
-                            autoSelect
-                            disableClearable
-                            selectOnFocus
-                            clearOnBlur
-                            handleHomeEndKeys
-                        />
+        <ThemeProvider theme={theme}>
+            <Box
+                sx={{
+                    padding: "1rem",
+                    borderRadius: "0.625em",
+                    boxShadow: "0px 0.125em 0.625em rgba(0, 0, 0, 0.1)",
+                }}
+            >
+                <Typography variant="h5" mb={2}>
+                    Send Money
+                </Typography>
+                <form onSubmit={handleSubmit}>
+                    <Grid container spacing={2} alignItems="center">
+                        <Grid item xs={12}>
+                            <InputLabel htmlFor="recipient">Recipient</InputLabel>
+                            <Autocomplete
+                                id="recipient"
+                                options={users}
+                                getOptionLabel={(option) => option ? option.username : ''}
+                                renderInput={(params) => <TextField {...params} variant="outlined" />}
+                                InputProps={{
+                                    error: recipientError,
+                                    helperText: recipientError ? 'Recipient is required' : '',
+                                }}
+                                value={users.find(user => user.username === recipient) || ""}
+                                onChange={handleChangeRecipient}
+                                fullWidth
+                                autoSelect
+                                disableClearable
+                                selectOnFocus
+                                clearOnBlur
+                                handleHomeEndKeys
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                id="amount"
+                                type="number"
+                                variant="outlined"
+                                label="Amount"
+                                value={amount}
+                                onChange={handleChangeAmount}
+                                fullWidth
+                                InputProps={{
+                                    inputProps: { min: "0", step: "0.01" },
+                                    error: amountError,
+                                    helperText: amountError ? 'Invalid amount' : '',
+                                }}
+                                sx={{ marginBottom: "1rem" }}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Button type="submit" variant="contained" color="primary" fullWidth>
+                                Send
+                            </Button>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Button type="button" variant="outlined" onClick={handleCancel} fullWidth>
+                                Cancel
+                            </Button>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            id="amount"
-                            type="number"
-                            variant="outlined"
-                            label="Amount"
-                            value={amount}
-                            onChange={handleChangeAmount}
-                            fullWidth
-                            InputProps={{
-                                inputProps: { min: "0", step: "0.01" },
-                                error: amountError,
-                                helperText: amountError ? 'Invalid amount' : '',
-                            }}
-                            sx={{ marginBottom: "1rem" }}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Button type="submit" variant="contained" color="primary" fullWidth>
-                            Send
-                        </Button>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Button type="button" variant="outlined" onClick={handleCancel} fullWidth>
-                            Cancel
-                        </Button>
-                    </Grid>
-                </Grid>
-            </form>
-            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleSnackbarClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-                <MuiAlert elevation={6} variant="filled" onClose={handleSnackbarClose} severity={snackbarSeverity}>
-                    {snackbarMessage}
-                </MuiAlert>
-            </Snackbar>
-        </Box>
+                </form>
+                <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleSnackbarClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+                    <MuiAlert elevation={6} variant="filled" onClose={handleSnackbarClose} severity={snackbarSeverity}>
+                        {snackbarMessage}
+                    </MuiAlert>
+                </Snackbar>
+            </Box>
+        </ThemeProvider>
     );
 };
 

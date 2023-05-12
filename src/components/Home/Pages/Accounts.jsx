@@ -10,8 +10,14 @@ import {
   TableBody,
   TextField,
   Button,
-  TableSortLabel
+  Grid,
+  Paper,
+  TableSortLabel,
+  IconButton
 } from "@mui/material";
+import { KeyboardArrowUp, KeyboardArrowDown } from '@mui/icons-material';
+import theme from "../../Misc/Theme";
+import { ThemeProvider } from "@mui/material/styles";
 
 const Accounts = ({ handleAccountsClose }) => {
   const userData = JSON.parse(localStorage.getItem("users"));
@@ -56,65 +62,82 @@ const Accounts = ({ handleAccountsClose }) => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-      <Typography variant="h5" component="h2" mb={2}>
-        Accounts
-      </Typography>
+    <ThemeProvider theme={theme}>
+      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <Box mt={4} mb={2}>
+          <Typography variant="h5" component="h2">Accounts</Typography>
+        </Box>
 
-      <TableContainer sx={{ width: "100%", marginBottom: "2rem" }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <TableSortLabel
-                  active={sortBy === "username"}
-                  direction={sortOrder}
-                  onClick={() => {
-                    setSortBy("username");
-                    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-                  }}
-                >
-                  User
-                </TableSortLabel>
-              </TableCell>
-              <TableCell align="right">
-                <TableSortLabel
-                  active={sortBy === "balance"}
-                  direction={sortOrder}
-                  onClick={() => {
-                    setSortBy("balance");
-                    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-                  }}
-                >
-                  Balance
-                </TableSortLabel>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>{renderRows()}</TableBody>
-        </Table>
-      </TableContainer>
+        <TableContainer component={Paper} sx={{ width: "100%", marginBottom: "2rem" }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortBy === "username"}
+                    direction={sortOrder}
+                    onClick={() => {
+                      setSortBy("username");
+                      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+                    }}
+                  >
+                    User
+                    {sortBy === 'username' && (
+                      <IconButton size="small">
+                        {sortOrder === 'asc' ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+                      </IconButton>
+                    )}
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell align="right">
+                  <TableSortLabel
+                    active={sortBy === "balance"}
+                    direction={sortOrder}
+                    onClick={() => {
+                      setSortBy("balance");
+                      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+                    }}
+                  >
+                    Balance
+                    {sortBy === 'balance' && (
+                      <IconButton size="small">
+                        {sortOrder === 'asc' ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+                      </IconButton>
+                    )}
+                  </TableSortLabel>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>{renderRows()}</TableBody>
+          </Table>
+        </TableContainer>
 
-      <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-        <div>
-          <TextField
-            label="Search"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            sx={{ marginRight: "1rem" }}
-          />
-          {filteredData.length === 0 && (
-            <Typography variant="body2" color="text.secondary">
-              No results found
-            </Typography>
-          )}
-        </div>
+        <Box mt={2} mb={2}>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={12} md={6}>
+              <TextField
+                label="Search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              {filteredData.length === 0 && (
+                <Typography variant="subtitle1" color="text.secondary" mt={1}>
+                  No results found
+                </Typography>
+              )}
+            </Grid>
 
-        <Button onClick={handleAccountsClose} variant="contained" color="primary">
-          Close
-        </Button>
+            <Grid item xs={12} md={6}>
+              <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                <Button onClick={handleAccountsClose} variant="contained" color="primary">
+                  Close
+                </Button>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
       </Box>
-    </Box>
+    </ThemeProvider>
   );
 };
 

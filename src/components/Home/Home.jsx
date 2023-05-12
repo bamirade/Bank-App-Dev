@@ -8,13 +8,14 @@ import {
   RemoveCircleOutline,
 } from "@mui/icons-material";
 import theme from "../Misc/Theme";
-import AccountSummary from "./AccountSummary";
-import QuickActions from "./QuickActions";
+import AccountSummary from "./Dashboard/AccountSummary";
+import QuickActions from "./Dashboard/QuickActions";
 import LogoutButton from "./Buttons/LogoutButton";
 import Deposit from "./Pages/Deposit";
 import Withdraw from "./Pages/Withdraw";
 import Accounts from "./Pages/Accounts";
 import Send from "./Pages/Send";
+import Budget from "./Dashboard/Budget";
 
 const Home = ({ handleLogout, loggedInUser }) => {
   const [showDeposit, setShowDeposit] = useState(false);
@@ -26,6 +27,8 @@ const Home = ({ handleLogout, loggedInUser }) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [totalBudget, setTotalBudget] = useState(0);
+
 
   const handleDepositSubmit = () => {
     setShowDeposit(false);
@@ -58,9 +61,10 @@ const Home = ({ handleLogout, loggedInUser }) => {
     setOpenSnackbar(false);
   };
 
+
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ padding: "1.75rem" }}>
+      <Box sx={{ padding: "1.75rem", alignItems: "center" }} >
         {showDeposit && (
           <Deposit
             handleDepositSubmit={handleDepositSubmit}
@@ -102,7 +106,7 @@ const Home = ({ handleLogout, loggedInUser }) => {
                   minimumHeight: "35vh",
                 }}
               >
-                <Typography variant="h5" component="h2">
+                <Typography variant="h5" component="h2" mb={2}>
                   Account Summary
                 </Typography>
                 <AccountSummary loggedInUser={loggedInUser} />
@@ -115,25 +119,53 @@ const Home = ({ handleLogout, loggedInUser }) => {
                   borderRadius: "8px",
                   p: "1rem",
                   minimumHeight: "35vh",
+                  pt: "1rem"
                 }}
               >
-                <Typography variant="h5" component="h2" mb={2}>
+                <Typography variant="h5" component="h2" mb={2} >
                   Quick Actions
                 </Typography>
-                <QuickActions
-                  handleSendClick={() => setShowSend(true)}
-                  handleDepositClick={() => setShowDeposit(true)}
-                  handleWithdrawClick={() => setShowWithdraw(true)}
-                  handleAccountsClick={() => setShowAccounts(true)}
-                  sendIcon={<AccountBalance />}
-                  depositIcon={<AddCircleOutline />}
-                  withdrawIcon={<RemoveCircleOutline />}
-                />
+                  <QuickActions
+                    handleSendClick={() => setShowSend(true)}
+                    handleDepositClick={() => setShowDeposit(true)}
+                    handleWithdrawClick={() => setShowWithdraw(true)}
+                    handleAccountsClick={() => setShowAccounts(true)}
+                    sendIcon={<AccountBalance />}
+                    depositIcon={<AddCircleOutline />}
+                    withdrawIcon={<RemoveCircleOutline />}
+                  />
               </Box>
             </Grid>
           </Grid>
         )}
-        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+        {!showDeposit && !showWithdraw && !showAccounts && !showSend && (
+          <Box
+            sx={{
+              border: "1px solid gray",
+              borderRadius: "8px",
+              p: "1rem",
+              minimumHeight: "35vh",
+              mt: "24px"
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between"
+              }}>
+              <Typography variant="h5" component="h2">
+                My Expenses
+              </Typography>
+              <Box align="right" pr={5}
+              >
+                <Typography variant="h5">Total Budget: </Typography>
+                <Typography variant="h5" sx={{ color: totalBudget >= 0 ? "green" : "red" }}>${totalBudget.toFixed(2)}</Typography>
+              </Box>
+            </Box>
+            <Budget loggedInUser={loggedInUser} setTotalBudget={setTotalBudget} />
+          </Box>
+        )}
+        <Box sx={{ display: "flex", justifyContent: "flex-end", p: "1rem", mt: "1rem" }}>
           <LogoutButton handleLogout={handleLogout} />
         </Box>
         <Snackbar

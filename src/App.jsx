@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Login from "./components/Auth/Login.jsx";
 import Home from "./components/Home/Home.jsx";
 import { Box } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./components/Misc/Theme.jsx";
 
 const App = () => {
   const [loggedInUser, setLoggedInUser] = useState(
@@ -27,15 +29,23 @@ const App = () => {
   };
 
   return (
-    <div>
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
-      {loggedInUser ? (
-        <Home handleLogout={handleLogout} loggedInUser={loggedInUser} />
-      ) : (
-        <Login handleLogin={handleLogin} />
-      )}
+    <ThemeProvider theme={theme}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          background: theme.palette.background.main,
+          "@media(min-width:769px)": { minHeight: "100vh" },
+        }}
+      >
+        {loggedInUser ? (
+          <Home handleLogout={handleLogout} loggedInUser={loggedInUser} />
+        ) : (
+          <Login handleLogin={handleLogin} />
+        )}
       </Box>
-    </div>
+    </ThemeProvider>
   );
 };
 
